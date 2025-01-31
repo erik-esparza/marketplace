@@ -55,7 +55,7 @@
                 </span>
             </a>
             <span aria-hidden="true"> | </span>
-            <a href="#" class="logout"> Logout </a>
+            <a href="{{ url_for('logout_page')}}" class="logout"> Logout </a>
         {% else %}
             <a class="2" href="{{ url_for('login_page')}}">Login</a>
             <a class="2" href="{{ url_for('register_page')}}">Register</a>  
