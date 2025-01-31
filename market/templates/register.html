@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+Register
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+<h1>Register Form</h1>
+<body>
+
+<form method="POST" class="form-register" style="color: aliceblue; display: flex; flex-flow: column nowrap; font-size: 1.5em; gap: 1.5vh; padding: 5 15px;">
+
+    {{ form.hidden_tag() }}
+    
+    {{ form.username.label()}}
+    {{ form.username(placeholder="User Name", class="input-field-register")}}
+
+    {{ form.email_address.label()}}
+    {{ form.email_address(placeholder="Email Address", class="input-field-register")}}
+
+    {{ form.password1.label()}}
+    {{ form.password1(placeholder="Write your password...", class="input-field-register")}}
+
+    {{ form.password2.label()}}
+    {{ form.password2(placeholder="Write your password again...", class="input-field-register")}}
+
+    <br>
+
+    <div class="">
+        <h6>Already have an account?</h6>
+        <a class="" href="{{ url_for('login_page') }}">Sign in</a>
+    </div>
+
+
+    {{ form.submit(class="btn submit-form")}}
+
+</form>
+
+</body>
+
+{% endblock %}

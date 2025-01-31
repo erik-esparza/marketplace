@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- handle alert deletion -->
+    <script> 
+        document.addEventListener("DOMContentLoaded", function () {
+            const closeButtons = document.querySelectorAll(".close-btn");
+            closeButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const alert = this.parentElement;
+                    alert.style.transition = "opacity 0.3s ease"; // Optional fade-out effect
+                    alert.style.opacity = 0; // Start fading out
+                    setTimeout(() => alert.remove(), 300); // Remove alert from the DOM after fade-out
+                });
+            });
+        });
+
+    </script>
+    
+
+    <div class="navBar">
+        <div class="navMain">
+            <a class="1" href="{{ url_for('home_page')}}">Home
+                <span class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12L12 3L21 12V21H14V15H10V21H3V12Z" stroke="black" stroke-width="2" fill="none"/>
+                    </svg>                    
+                </span>
+            </a>
+
+            <a class="2" href="{{ url_for('market_page')}}">Market
+                <span class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 10H20V18H4V10ZM4 4H20V8H4V4ZM4 4V10H20V4H4Z" stroke="black" stroke-width="2" fill="none"/>
+                    </svg>                    
+                </span>
+            </a>
+        </div>
+        <div class="navSec">
+            {% if current_user.is_authenticated %}
+            <a href="#" class="budget"> 
+                {{ current_user.prettier_budget }}
+            </a>
+
+            <a href="#" class="welcome"> Welcome, {{ current_user.username }} 
+                <span class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="4" stroke="black" stroke-width="2" fill="none"/>
+                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="black" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </span>
+            </a>
+            <span aria-hidden="true"> | </span>
+            <a href="#" class="logout"> Logout </a>
+        {% else %}
+            <a class="2" href="{{ url_for('login_page')}}">Login</a>
+            <a class="2" href="{{ url_for('register_page')}}">Register</a>  
+        {% endif %}
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <button type="button" class="close-btn" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block title %}
+        
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+        
+    {% endblock %}
+</body>
+</html>
