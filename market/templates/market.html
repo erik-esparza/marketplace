@@ -4,17 +4,50 @@ Market
 {% endblock %}
 
 {% block content %}
-<div class="itemCont">
-    {% for item in items %}
-    <span class="item">
-        <img src="{{ item.image }}" alt="">
-        <h2>{{ item.name }}</h2>
-        <span>{{ item.price }}$</span>
-        <div class="optionsCont">
-            <button class="options">Buy</button>
-            <button class="options">More info</button>
+
+<div class="market-container">
+    <div class="available-items">
+        <h2>Available Items</h2>
+        <div class="itemCont">
+            {% for item in items %}
+            <span class="item">
+                <img src="{{ item.image }}" alt="">
+                <h2>{{ item.name }}</h2>
+                <span>{{ item.price }}$</span>
+                <div class="optionsCont">
+                    <button class="options">Buy</button>
+                    <!-- Button to trigger modal -->
+                    <button class="options" onclick="openModal('{{ item.id }}')">More info.</button>         
+                </div>
+            </span>
+
+            <!-- Include modal for this available item -->
+            {% include 'includes/modal.html' %}
+            {% endfor %}
+
         </div>
-    </span>
-    {% endfor %}
+    </div>
+
+    <div class="owned-items">
+        <h2>Owned Items</h2>
+        <div class="itemCont">
+            {% for item in owned_items %}
+            <span class="item">
+                <img src="{{ item.image }}" alt="">
+                <h2>{{ item.name }}</h2>
+                <span>{{ item.price }}$</span>
+                <div class="optionsCont">
+                    <button class="options">Sell</button>
+                    <!-- Button to trigger modal -->
+                    <button class="options" onclick="openModal('{{ item.id }}')">More info.</button>                
+                </div>
+            </span>
+
+            <!-- Include modal for this owned item -->
+            {% include 'includes/modal.html' %}
+            {% endfor %}
+        </div>
+    </div>
 </div>
+
 {% endblock %}

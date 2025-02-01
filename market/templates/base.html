@@ -24,7 +24,7 @@
 
     <div class="navBar">
         <div class="navMain">
-            <a class="1" href="{{ url_for('home_page')}}">Home
+            <a class="nav-item" href="{{ url_for('home_page')}}">Home
                 <span class="icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 12L12 3L21 12V21H14V15H10V21H3V12Z" stroke="black" stroke-width="2" fill="none"/>
@@ -32,7 +32,7 @@
                 </span>
             </a>
 
-            <a class="2" href="{{ url_for('market_page')}}">Market
+            <a class="nav-item" href="{{ url_for('market_page')}}">Market
                 <span class="icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4 10H20V18H4V10ZM4 4H20V8H4V4ZM4 4V10H20V4H4Z" stroke="black" stroke-width="2" fill="none"/>
@@ -57,8 +57,8 @@
             <span aria-hidden="true"> | </span>
             <a href="{{ url_for('logout_page')}}" class="logout"> Logout </a>
         {% else %}
-            <a class="2" href="{{ url_for('login_page')}}">Login</a>
-            <a class="2" href="{{ url_for('register_page')}}">Register</a>  
+            <a class="nav-item" href="{{ url_for('login_page')}}">Login</a>
+            <a class="nav-item" href="{{ url_for('register_page')}}">Register</a>  
         {% endif %}
         </div>
     </div>
@@ -85,5 +85,11 @@
     {% block content %}
         
     {% endblock %}
+
+
+<!-- script for modal functionality -->
+<script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+<script>console.log('script loaded')</script>
+
 </body>
 </html>

@@ -1,0 +1,9 @@
+<!-- templates/includes/modal.html -->
+<div id="modal-{{ item.id }}" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('{{ item.id }}')">&times;</span>
+      <h2>{{ item.name }}</h2>
+      <p><strong>Price:</strong> {{ item.price }}$</p>
+      <p><strong>Description:</strong> {{ item.description }}</p>
+    </div>
+  </div>

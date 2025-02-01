@@ -5,6 +5,9 @@ from market.forms import RegisterForm, LoginForm
 from market import db
 from flask_login import login_user, logout_user, login_required
 
+
+let payment = useState(debt, newDebt)
+
 @app.route('/')
 @app.route('/home')
 def home_page():
@@ -18,13 +21,15 @@ def market_page():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
-    form = RegisterForm()
+    form = RegisterForm() #specify the method we're invoking
     if form.validate_on_submit():
         user_to_create = User(username=form.username.data,
                               email_address=form.email_address.data,
                               password=form.password1.data)
         db.session.add(user_to_create)
         db.session.commit()
+        login_user(user_to_create)
+        flash(f"Account created successfully. You're now logged in as {user_to_create.username} ", category='success')
         return redirect(url_for('market_page'))
     if form.errors != {}: #If there are no errors (!) from the valid
         for err_msg in form.errors.values():
