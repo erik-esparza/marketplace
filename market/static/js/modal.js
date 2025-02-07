@@ -1,11 +1,7 @@
 // Function to open the modal
 function openModal(itemId) {
-  console.log("Opening modal for ID:", "modal-" + itemId);
   var modal = document.getElementById("modal-" + itemId);
-  console.log("Modal element:", modal);
-  if (modal) {
-    modal.style.display = "block";
-  }
+  modal.style.display = "block";
 }
 
 // Function to close the modal
@@ -20,3 +16,18 @@ window.onclick = function (event) {
     event.target.style.display = "none";
   }
 };
+
+// Function to open the modal of purchase confirmation
+function openModalPurchase(itemId) {
+  console.log("Opening modal for ID:", "modal-purchase-" + itemId);
+  var modal = document.getElementById("modal-purchase-" + itemId);
+  console.log("Modal element:", modal);
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+
+function closeModalPurchase(itemId) {
+  var modal = document.getElementById("modal-purchase-" + itemId);
+  modal.style.display = "none";
+}

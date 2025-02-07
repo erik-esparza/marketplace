@@ -1,4 +1,5 @@
-<!-- templates/includes/modal.html -->
+<!-- INCLUDED IN MARKET.HTML - AVAILABLE RESOURCES: items, purchase_item, sell_item -->
+<!-- info modal -->
 <div id="modal-{{ item.id }}" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('{{ item.id }}')">&times;</span>
@@ -7,3 +8,22 @@
       <p><strong>Description:</strong> {{ item.description }}</p>
     </div>
   </div>
+
+<!-- purchase confirmation modal -->
+<div id="modal-purchase-{{ item.id }}" class="modal">
+  <div class="modal-content">
+    <div class="modal-top-container">
+      <h2>{{ item.name }}</h2>
+      <span class="close" onclick="closeModalPurchase('{{ item.id }}')">&times;</span>
+    </div>
+
+    <div class="confirmation-container">
+      <p> Are you sure you want to buy this item for {{ item.price }}$ ?</p>
+      <h5>Note: when clicking purchase, the sale is final and can't be undone.</h5>
+        <form method="POST">
+          {{ purchase_item.hidden_tag() }}
+          {{ purchase_item.submit() }}
+        </form>
+      </div>
+  </div>
+</div>

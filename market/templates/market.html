@@ -15,13 +15,13 @@ Market
                 <h2>{{ item.name }}</h2>
                 <span>{{ item.price }}$</span>
                 <div class="optionsCont">
-                    <button class="options">Buy</button>
+                    <button class="options" onclick="openModalPurchase('{{ item.id }}')">Buy</button>
                     <!-- Button to trigger modal -->
                     <button class="options" onclick="openModal('{{ item.id }}')">More info.</button>         
                 </div>
             </span>
 
-            <!-- Include modal for this available item -->
+            <!-- Include modal for this available item, and send items imported from Routes (stemming from other sources) to this page, too (items, Purchase item, Sell item...) -->
             {% include 'includes/modal.html' %}
             {% endfor %}
 
