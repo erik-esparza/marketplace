@@ -21,30 +21,33 @@ Market
                 </div>
             </span>
 
-            <!-- Include modal for this available item, and send items imported from Routes (stemming from other sources) to this page, too (items, Purchase item, Sell item...) -->
-            {% include 'includes/modal.html' %}
+            <!-- Include modal for this available item -->
+            {% with current_item=item %}
+                {% include 'includes/modal.html' %}
+            {% endwith %}
             {% endfor %}
-
         </div>
     </div>
 
     <div class="owned-items">
         <h2>Owned Items</h2>
         <div class="itemCont">
-            {% for item in owned_items %}
+            {% for owned_item in owned_items %}
             <span class="item">
-                <img src="{{ item.image }}" alt="">
-                <h2>{{ item.name }}</h2>
-                <span>{{ item.price }}$</span>
+                <img src="{{ owned_item.image }}" alt="">
+                <h2>{{ owned_item.name }}</h2>
+                <span>{{ owned_item.price }}$</span>
                 <div class="optionsCont">
-                    <button class="options">Sell</button>
+                    <button class="options" onclick="openModalSale('{{ owned_item.id }}')">Sell</button>
                     <!-- Button to trigger modal -->
-                    <button class="options" onclick="openModal('{{ item.id }}')">More info.</button>                
+                    <button class="options" onclick="openModal('{{ owned_item.id }}')">More info.</button>                
                 </div>
             </span>
 
             <!-- Include modal for this owned item -->
-            {% include 'includes/modal.html' %}
+            {% with current_item=owned_item %}
+                {% include 'includes/modal.html' %}
+            {% endwith %}
             {% endfor %}
         </div>
     </div>

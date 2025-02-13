@@ -1,29 +1,43 @@
 <!-- INCLUDED IN MARKET.HTML - AVAILABLE RESOURCES: items, purchase_item, sell_item -->
 <!-- info modal -->
-<div id="modal-{{ item.id }}" class="modal">
+<div id="modal-{{ current_item.id }}" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('{{ item.id }}')">&times;</span>
-      <h2>{{ item.name }}</h2>
-      <p><strong>Price:</strong> {{ item.price }}$</p>
-      <p><strong>Description:</strong> {{ item.description }}</p>
+      <span class="close" onclick="closeModal('{{ current_item.id }}')">&times;</span>
+      <h2>{{ current_item.name }}</h2>
+      <p><strong>Price:</strong> {{ current_item.price }}$</p>
+      <p><strong>Description:</strong> {{ current_item.description }}</p>
     </div>
   </div>
 
 <!-- purchase confirmation modal -->
-<div id="modal-purchase-{{ item.id }}" class="modal">
+<div id="modal-purchase-{{ current_item.id }}" class="modal">
   <div class="modal-content">
     <div class="modal-top-container">
-      <h2>{{ item.name }}</h2>
-      <span class="close" onclick="closeModalPurchase('{{ item.id }}')">&times;</span>
+      <h2>{{ current_item.name }}</h2>
+      <span class="close" onclick="closeModalPurchase('{{ current_item.id }}')">&times;</span>
     </div>
 
     <div class="confirmation-container">
-      <p> Are you sure you want to buy this item for {{ item.price }}$ ?</p>
+      <p> Are you sure you want to buy this item for {{ current_item.price }}$ ?</p>
       <h5>Note: when clicking purchase, the sale is final and can't be undone.</h5>
         <form method="POST">
           {{ purchase_item.hidden_tag() }}
+          <input id="purchased_item" name="purchased_item" type="hidden" value="{{current_item.name}}">
           {{ purchase_item.submit() }}
         </form>
       </div>
+  </div>
+</div>
+
+<div id="modal-sale-{{ current_item.id }}" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModalSale('{{ current_item.id }}')">&times;</span>
+    <h2>Confirm Sale</h2>
+    <p>Are you sure you want to sell {{ current_item.name }} for {{ current_item.price }}$?</p>
+    <form method="POST">
+    {{ sell_item.hidden_tag() }}
+    <input id="sold_item" name="sold_item" type="hidden" value="{{current_item.name}}">
+    {{ sell_item.submit() }}
+    </form>
   </div>
 </div>

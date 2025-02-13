@@ -31,3 +31,17 @@ function closeModalPurchase(itemId) {
   var modal = document.getElementById("modal-purchase-" + itemId);
   modal.style.display = "none";
 }
+
+function openModalSale(itemId) {
+  console.log("Opening modal for ID:", "modal-sale-" + itemId);
+  var modal = document.getElementById("modal-sale-" + itemId);
+  console.log("Modal element:", modal);
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+
+function closeModalSale(itemId) {
+  var modal = document.getElementById("modal-sale-" + itemId);
+  modal.style.display = "none";
+}

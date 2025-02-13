@@ -11,7 +11,7 @@ class User(db.Model, UserMixin): #MixIn provides us with various pre-defined met
     username = db.Column(db.String(length=30), nullable=False, unique=True)
     email_address = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
-    budget = db.Column(db.Integer(), nullable=False, default=1000)
+    budget = db.Column(db.Integer(), nullable=False, default=8900)
 
     #Attention! We're effectively linking the Users with Item (single instance of the Items class). If we weren't using db.relationship we'd have to exchange IDs with something called "Foreign Key."
     #Instead, we use relationship to be able to assign a One-to-many relationship, this means a user can have many items. In turn, 'backref' extends this
@@ -36,6 +36,14 @@ class User(db.Model, UserMixin): #MixIn provides us with various pre-defined met
     def check_password_correction(self, attempted_password):
         return bcrypt.check_password_hash(self.password_hash, attempted_password) #We are skipping the IF here - simply because this function will check the hash, if correct and the password matches the hash of the encrypted password, it will return TRUE, if not, FALSE. as such, IF isn't needed in a Boolean function as it will just be able to say "Yes" or "No". :)
     
+    #Checking if the user has more or equal budget in order to buy something
+    def can_purchase(self, item_obj) :
+        return self.budget >= item_obj.price
+    
+    #Checking a user effectively owns an object before buying - note that we simply use a return true (boolean statement)
+    # Basically if this ite (item_obj) exists within User.items (Self.items)
+    def can_sell(self, item_obj):
+        return item_obj in self.items
 
 #Class is a template, a platonic idea with predetermined fields
 class Item(db.Model):
@@ -51,3 +59,15 @@ class Item(db.Model):
 #syntax to the item when its called from the console, logged somewhere or use the repr() or print() method in the console.
     def __repr__(self): #__Repr__ = [The syntax is:] ........ (self) = [The instance (all of them) of item] .......
         return f'Item {self.name}' #return a complex string, self (the instance of item) . name (the name property.) e.g of the output: 'Item Keyboard'
+
+    #Here, we can pass user. This means: current_user in routes (through Flask login_form magic) is passed as the "user".
+    #Effectively self refers to this current object and user is the parameter we brought from routes.
+    def buy(self, user):
+        self.owner = user.id
+        user.budget -= self.price
+        db.session.commit()
+
+    def sell(self, user):
+        self.owner = None
+        user.budget += self.price
+        db.session.commit()

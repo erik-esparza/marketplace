@@ -1,22 +1,53 @@
 from market import app
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from market.models import Item, User
 from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
 from market import db
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route('/')
 @app.route('/home')
 def home_page():
     return render_template('home.html')
 
-@app.route('/market')
+@app.route('/market', methods=['GET', 'POST'])
 @login_required #we won't render this if the user isn't logged in. To verify this, the URL needs to append ?next=...(page url) with the ...(page url) being the page that the user tried to access before logging in. The redirection will happen automatically and its defined in __init__.py
 def market_page():
-    items = Item.query.all()
+
     purchase_item = PurchaseItemForm()
     sell_item = SellItemForm()
-    return render_template('market.html', items=items, purchase_item=purchase_item, sell_item=sell_item)
+
+    # Essentially, we can directly wrap the functions of a route by specifying which actions belong to which req method
+    #, In this example POST is made for the "buy" process that'll POST the item has been "bought" (assigned in the models.py
+    # To a User, literally "self.owner = user.id" in models (Item class), self is p_item_object here.
+    if request.method == 'POST':
+        purchased_item = request.form.get('purchased_item')
+        p_item_object = Item.query.filter_by(name=purchased_item).first()
+
+        if p_item_object:
+            if current_user.can_purchase(p_item_object):
+                p_item_object.buy(current_user)
+                flash(f"Congratulations! Now you own {p_item_object.name}", category='success')
+            else:
+                flash("Not enough money. Sorry!")
+
+        #Sell logic
+        sold_item = request.form.get('sold_item')
+        s_item_object = Item.query.filter_by(name=sold_item).first()
+        if s_item_object:
+            if current_user.can_sell(s_item_object):
+                s_item_object.sell(current_user)
+                flash(f"You've sold {s_item_object.name}", category='success')
+            else:
+                flash("Sorry, there was a problem while selling your item.")
+
+        return redirect(url_for('market_page'))
+    
+
+    if request.method == 'GET':
+        items = Item.query.filter_by(owner=None) ##No Owner defaults to NULL or "None"
+        owned_items = Item.query.filter_by(owner=current_user.id) #Invoke the items that belong to the current_user id.
+        return render_template('market.html', items=items, purchase_item=purchase_item, owned_items=owned_items, sell_item=sell_item)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
