@@ -14,4 +14,4 @@ login_manager.login_view = "login_page" #simply redirects to another page if the
                                         #in the routes.py file)
 login_manager.login_message_category = "info"
 
-from market import routes #we have the market folder, in where we can find the routes "/route"
+from market import routes #we have the market folder, in where we can find the routes "/route"``

@@ -31,6 +31,7 @@
 
 <div id="modal-sale-{{ current_item.id }}" class="modal">
   <div class="modal-content">
+    <div class="confirmation-container">
     <span class="close" onclick="closeModalSale('{{ current_item.id }}')">&times;</span>
     <h2>Confirm Sale</h2>
     <p>Are you sure you want to sell {{ current_item.name }} for {{ current_item.price }}$?</p>
@@ -39,5 +40,6 @@
     <input id="sold_item" name="sold_item" type="hidden" value="{{current_item.name}}">
     {{ sell_item.submit() }}
     </form>
+    </div>
   </div>
 </div>
