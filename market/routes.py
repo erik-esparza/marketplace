@@ -88,7 +88,7 @@ def login_page():
         
     return render_template('login.html', form=form)
 
-@app.route('/logout', method=['POST'])
+@app.route('/logout', methods=['POST'])
 def logout_page():
     logout_user()
     flash("You have been logged out!", category='info')
