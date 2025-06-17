@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables
+.env
+
+# Database files
+*.sqlite3
+*.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# MacOS
+.DS_Store
+
+# Pytest
+.pytest_cache/
+
+#/market.db, docker secrets folder
+secrets/
+*.sqlite

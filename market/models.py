@@ -7,6 +7,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class User(db.Model, UserMixin): #MixIn provides us with various pre-defined methods we can use later
+    __tablename__ = 'users'  # ✅ avoid reserved keyword, as we're using PostgreSQL
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(length=30), nullable=False, unique=True)
     email_address = db.Column(db.String(length=50), nullable=False, unique=True)
@@ -53,7 +54,7 @@ class Item(db.Model):
     barcode = db.Column(db.String(length=12), nullable=False, unique=True)
     description = db.Column(db.String(length=1024), nullable=False, unique=True)
     image = db.Column(db.String(length=512), nullable=False)
-    owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    owner = db.Column(db.Integer(), db.ForeignKey('users.id')) #Note! we've updated 'user' to users. This is explained in line 10, but note how we were even writing 'user' although the original note is 'User' — a testament of PGSQL issues with capitalization.
 
 #attention! __repr__ provides a quick, human-readable way to identify the instance when you print it, log it, or inspect it. Basically, it's giving a bit of
 #syntax to the item when its called from the console, logged somewhere or use the repr() or print() method in the console.

@@ -10,6 +10,10 @@ from flask_login import login_user, logout_user, login_required, current_user
 def home_page():
     return render_template('home.html')
 
+@app.route('/health')
+def health():
+    return "OK", 200
+
 @app.route('/market', methods=['GET', 'POST'])
 @login_required #we won't render this if the user isn't logged in. To verify this, the URL needs to append ?next=...(page url) with the ...(page url) being the page that the user tried to access before logging in. The redirection will happen automatically and its defined in __init__.py
 def market_page():
@@ -89,3 +93,54 @@ def logout_page():
     logout_user()
     flash("You have been logged out!", category='info')
     return redirect(url_for('home_page'));
+
+@app.route('/seed')
+def seed_db():
+    sample_items = [
+        {
+            "name": "Dream Dust",
+            "price": 19,
+            "barcode": "111111111111",
+            "description": "Sleep-enhancing tincture made from skullcap, valerian, and passionflower.",
+            "image": "/static/images/dream_dust.png"
+        },
+        {
+            "name": "Brain Boost",
+            "price": 25,
+            "barcode": "222222222222",
+            "description": "Focus-enhancing blend with lion’s mane, bacopa, and ginkgo.",
+            "image": "/static/images/brain_boost.png"
+        },
+        {
+            "name": "Glow Elixir",
+            "price": 15,
+            "barcode": "333333333333",
+            "description": "Antioxidant-rich infusion for skin, liver, and gut.",
+            "image": "/static/images/glow_elixir.png"
+        },
+        {
+            "name": "Health Potion",
+            "price": 30,
+            "barcode": "444444444444",
+            "description": "Classic healing brew: echinacea, elderberry, and rose hips.",
+            "image": "/static/images/health_potion.png"
+        },
+        {
+            "name": "Mana Potion",
+            "price": 30,
+            "barcode": "555555555555",
+            "description": "Nervine energy tonic: rhodiola, maca, and reishi extract.",
+            "image": "/static/images/mana_potion.png"
+        }
+    ]
+
+    seeded = []
+    for item_data in sample_items:
+        existing_item = Item.query.filter_by(name=item_data['name']).first()
+        if not existing_item:
+            item = Item(**item_data)
+            db.session.add(item)
+            seeded.append(item_data['name'])
+
+    db.session.commit()
+    return jsonify({"seeded": seeded if seeded else "Already seeded!"})
