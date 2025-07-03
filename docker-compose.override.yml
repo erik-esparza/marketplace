@@ -10,9 +10,11 @@ services:
       - FLASK_ENV=development
       - DB_PASSWORD_FILE=/run/secrets/db_password
       - SECRET_KEY_FILE=/run/secrets/secret_key
+      - RESEND_KEY_FILE=/run/secrets/resend_key
     secrets:
       - db_password
       - secret_key
+      - resend_key
     depends_on:
       postgres:
         condition: service_healthy
@@ -54,6 +56,8 @@ secrets:
     file: ./secrets/db_password.txt
   secret_key:
     file: ./secrets/secret_key.txt
+  resend_key:
+    file: ./secrets/resend_key.txt
 
 networks:
   app-network:

@@ -18,47 +18,173 @@
                 });
             });
         });
-
     </script>
     
+    <!-- handle hamburger menu ability to hide/show the nested elements-->
+     <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log('script for menu loaded')
+        const hamburger = document.querySelector('.hamburger');
+        const navBar = document.querySelector('.navBar');
+        const navMain = document.querySelector('.navMain');
+        const navSec = document.querySelector('.navSec');
+    
+        hamburger.addEventListener('click', () => {
+            navBar.classList.toggle('show');
+            navMain.classList.toggle('show');
+            navSec.classList.toggle('show');
+        });
+    });
+    </script>
 
+    <!-- handle displaying the user info-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleArea = document.querySelector(".welcome");
+            const data = document.querySelectorAll(".data")
+            const arrow = document.querySelectorAll(".dropdown-welcome svg")
+            console.log
+        
+            toggleArea.addEventListener("click", function (e) {
+                e.preventDefault(); // prevent link jumping to #
+                [...data].forEach(el => {
+                    el.classList.toggle("visible");
+                    el.classList.toggle("hidden");
+                });
+                [...arrow].forEach(el => {
+                    el.classList.toggle("opened");
+                });
+            });
+        });
+        </script>
+    
+
+
+    <!-- This node renders mobile's hamburger menu -->
+    <button class="hamburger" aria-label="Toggle menu" style="color: black;">
+    <span>☰</span>
+    <img src="../static/images/ytrade.png" class="logo-mobile">
+    </button>
     <div class="navBar">
         <div class="navMain">
-            <a class="nav-item" href="{{ url_for('home_page')}}">Home
+            <a class="nav-item" href="{{ url_for('home_page')}}">
                 <span class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 12L12 3L21 12V21H14V15H10V21H3V12Z" stroke="black" stroke-width="2" fill="none"/>
-                    </svg>                    
-                </span>
-            </a>
-
-            <a class="nav-item" href="{{ url_for('market_page')}}">Market
-                <span class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 10H20V18H4V10ZM4 4H20V8H4V4ZM4 4V10H20V4H4Z" stroke="black" stroke-width="2" fill="none"/>
-                    </svg>                    
-                </span>
-            </a>
-        </div>
-        <div class="navSec">
-            {% if current_user.is_authenticated %}
-            <a href="#" class="budget"> 
-                {{ current_user.prettier_budget }}
-            </a>
-
-            <a href="#" class="welcome"> Welcome, {{ current_user.username }} 
-                <span class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="8" r="4" stroke="black" stroke-width="2" fill="none"/>
-                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="black" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                    <path d="M10 12h4v4h-4z" />
                     </svg>
                 </span>
+                <span class="icon">Home</span>
             </a>
-            <span aria-hidden="true"> | </span>
-            <a href="{{ url_for('logout_page')}}" class="logout"> Logout </a>
+
+            <a class="nav-item" href="{{ url_for('market_page')}}">
+                <span class="icon">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M17 17h-11v-14h-2" />
+                    <path d="M6 5l14 1l-1 7h-13" />
+                    </svg>
+                </span>
+                <span>Market</span>
+            </a>
+        </div>
+        <img src="../static/images/ytrade.png" class="logo">
+        <div class="navSec">
+            {% if current_user.is_authenticated %}
+            <a href="#" class="welcome"> 
+                <span>Welcome, {{ current_user.username }} </span>
+                <span class="icon dropdown-welcome">
+                    <svg data-slot="icon" height="24" width="24" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25"></path>
+                      </svg>
+                </span>
+            </a>
+            <div class="data hidden">
+                <a href="#" class="budget"> 
+                    <span class="icon" style="margin-right: 5px;">
+                        <svg data-slot="icon" fill="none" height="24" width="24" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                      </svg>
+                    </span>
+                    {{ current_user.prettier_budget }}
+                </a>
+                <a href="{{ url_for('logout_page')}}" class="logout"> 
+                    <span class="icon" style="margin-right: 5px;">
+                        <svg data-slot="icon" fill="none" stroke-width="1.5" height="24" width="24" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"></path>
+                          </svg>
+                    </span>
+                    Logout 
+                </a>
+            </div>
+
         {% else %}
-            <a class="nav-item" href="{{ url_for('login_page')}}">Login</a>
-            <a class="nav-item" href="{{ url_for('register_page')}}">Register</a>  
+            <a class="nav-item" href="{{ url_for('login_page')}}">
+                <span class="icon">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#000000"
+                        stroke-width="1"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                        <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                    </svg>
+            </span>
+            <span>Login</span>
+            </a>
+
+            <a class="nav-item" href="{{ url_for('register_page')}}">
+            <span class="icon">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000000"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                >
+                <path d="M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3" />
+                <path d="M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />
+                <path d="M13 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7" />
+                <path d="M5 7h-1a1 1 0 0 0 -1 1v8a1 1 0 0 0 1 1h1" />
+                <path d="M17 12h.01" />
+                <path d="M13 12h.01" />
+                </svg>
+            </span>
+            <span>Register</span>
+            </a>  
         {% endif %}
         </div>
     </div>

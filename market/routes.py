@@ -1,9 +1,11 @@
 from market import app
 from flask import render_template, redirect, url_for, flash, request
 from market.models import Item, User
-from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
+from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm, RequestResetForm, ResetPasswordForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
+from market.token_utils import generate_token, verify_token
+from market.email_utils import send_reset_email
 
 @app.route('/')
 @app.route('/home')
@@ -20,6 +22,7 @@ def market_page():
 
     purchase_item = PurchaseItemForm()
     sell_item = SellItemForm()
+    sort_by = request.args.get('sort')
 
     # Essentially, we can directly wrap the functions of a route by specifying which actions belong to which req method
     #, In this example POST is made for the "buy" process that'll POST the item has been "bought" (assigned in the models.py
@@ -49,9 +52,21 @@ def market_page():
     
 
     if request.method == 'GET':
-        items = Item.query.filter_by(owner=None) ##No Owner defaults to NULL or "None"
+        available_items_query = Item.query.filter_by(owner=None) ##No Owner defaults to NULL or "None"
+
+        ##Logic to handle the filtering - the form is on market.html
+        if sort_by == 'price_asc':
+            available_items_query = available_items_query.order_by(Item.price.asc())
+        elif sort_by == 'price_desc':
+            available_items_query = available_items_query.order_by(Item.price.desc())
+        elif sort_by == 'name_asc':
+            available_items_query = available_items_query.order_by(Item.name.asc())
+        elif sort_by == 'name_desc':
+            available_items_query = available_items_query.order_by(Item.name.desc())
+
+        available_items = available_items_query.all()
         owned_items = Item.query.filter_by(owner=current_user.id) #Invoke the items that belong to the current_user id.
-        return render_template('market.html', items=items, purchase_item=purchase_item, owned_items=owned_items, sell_item=sell_item)
+        return render_template('market.html', items=available_items, purchase_item=purchase_item, owned_items=owned_items, sell_item=sell_item)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
@@ -88,11 +103,45 @@ def login_page():
         
     return render_template('login.html', form=form)
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET', 'POST'])
 def logout_page():
     logout_user()
     flash("You have been logged out!", category='info')
     return redirect(url_for('home_page'));
+
+@app.route('/request_password', methods=['GET', 'POST'])
+def request_password():
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email_address=form.email.data).first()
+        if user:
+            token = generate_token(user.email_address)
+            reset_url = url_for('reset_password', token=token, _external=True)
+            send_reset_email(user.email_address, reset_url)
+        flash("If your email exists, you'll receive a reset link shortly.", category='info')
+        return redirect(url_for('login_page'))
+    return render_template('request_password.html', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    email = verify_token(token)
+    if not email:
+        flash("The reset link is invalid or expired.", category='danger')
+        return redirect(url_for('request_password'))
+
+    user = User.query.filter_by(email_address=email).first()
+    if not user:
+        flash("Invalid user.", category='danger')
+        return redirect(url_for('request_password'))
+
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.password = form.password.data  # this triggers the @password.setter, which bcrypts it
+        db.session.commit()
+        flash("Your password has been updated. Please log in.", category='success')
+        return redirect(url_for('login_page'))
+
+    return render_template('reset_password.html', form=form)
 
 @app.route('/seed')
 def seed_db():
@@ -143,4 +192,4 @@ def seed_db():
             seeded.append(item_data['name'])
 
     db.session.commit()
-    return jsonify({"seeded": seeded if seeded else "Already seeded!"})
+    return redirect(url_for('home_page'));

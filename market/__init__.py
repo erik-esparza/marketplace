@@ -22,10 +22,17 @@ def get_secret_key():
             return f.read().strip()
     return os.environ.get('SECRET_KEY', 'fallback-dev-key')
 
+def get_resend_key():
+    if 'RESEND_KEY_FILE' in os.environ:
+        with open(os.environ['RESEND_KEY_FILE']) as f:
+            return f.read().strip()
+    return os.environ.get('RESEND_KEY', 'fallback-dev-key')
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = get_database_uri()
 app.config['SECRET_KEY'] = get_secret_key()
+app.config['RESEND_KEY'] = get_resend_key()
 db = SQLAlchemy(app) # basically we specify the DB manager SQLAlchemy will work on this particular app scope
 
 bcrypt = Bcrypt(app) # basically we specify the encryption will work on this particular app scope

@@ -32,3 +32,14 @@ class PurchaseItemForm(FlaskForm):
 
 class SellItemForm(FlaskForm):
         submit = SubmitField(label='Sell now')
+
+# Password reset
+
+class RequestResetForm(FlaskForm):
+    email = StringField(label='Your Email', validators=[DataRequired(), Email()])
+    submit = SubmitField(label='Send Reset Link')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(label='New Password', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField(label='Confirm New Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(label='Reset Password')

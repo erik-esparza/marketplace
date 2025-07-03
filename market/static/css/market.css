@@ -1,0 +1,211 @@
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(25, 25);
+        opacity: 0;
+    }
+}
+
+
+.market-container {
+    display: flex;
+    margin: 0;
+    width: 100%;
+    padding: 10vh 2.5vw 2.5vh 2.5vw;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Items in the @market route */
+.itemCont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2vw;
+    padding: 0;
+}
+
+.itemCont .item {
+    flex: 1 1 calc(50% - 2vw);
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+}
+
+.available-items, .owned-items {
+    width: 100%;
+}
+
+h2 {
+    color: whitesmoke;
+    font-size: 14px;
+}
+
+.item {
+    background-color: white;
+    padding: 5%;
+    border-radius: 15px;
+    margin: 0;
+}
+.item > * {
+    margin: 0;
+    color:rgb(26, 26, 26);
+    width:100%;
+}
+  .sort-container {
+    position: relative;
+    width: 100%;
+    justify-content: flex-end;
+    padding: 15px 0;
+  }
+
+  .sort-toggle {
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .sort-form {
+    display: none;
+    position: sticky;
+    justify-content: center;
+    align-items: center;
+    top: 100%;
+    right: 0;
+    background-color: whitesmoke;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 180px;
+  }
+
+  .sort-form.show {
+    display: flex;
+  }
+
+  .sort-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .sort-form select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+
+.owned-items > h2 {
+    margin-bottom: 25px;
+}
+
+.optionsCont {
+    display: flex;
+    flex-flow: row wrap; /* Allows wrapping on smaller screens */
+    gap: 12px; /* Consistent spacing between buttons */
+    margin: 20px 0;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.price {
+    font-size: 24px;
+}
+
+.options {
+    padding: 12px 24px;
+    background-color: #d6d4f9; /* Fallback to indigo-600 */
+    color: rgb(48, 48, 48);
+    border: none;
+    border-radius: 8px; /* Modern rounded corners */
+    font-size: 1em;
+    font-weight: 1000;
+    cursor: pointer;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    min-width: auto; /* Let content determine width */
+    flex: 1 0 auto; /* Flexible but won't shrink */
+    max-width: 200px; /* Prevents over-stretching */
+    position: relative;
+    overflow: hidden;
+}
+
+.item h2 {
+    margin: 15px 0;
+}
+
+/* Hover/Active States */
+.options:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #ebe9fb;
+    color: grey;
+}
+
+.options:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Ripple Effect (Optional) */
+.options::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.35);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.options:focus:not(:active)::after {
+    animation: ripple 900ms ease-in-out;
+}
+
+.sort-form > select {
+    height: 30px;
+}
+
+@media (min-width: 950px) {
+    .market-container {
+        gap: 2vw;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .item {
+        padding: 2.5%;
+    }
+
+    .owned-items > h2 {
+        margin-bottom: 100px;
+    }
+
+    .sort-form {
+        padding: 15px 5px;
+        margin: 10px 0;
+        background-color: whitesmoke;
+        border-radius: 5px;
+        width: 35%;
+    }
+
+    .sort-container {
+        justify-content: flex-start;
+    }
+
+}

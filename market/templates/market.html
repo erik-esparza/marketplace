@@ -5,15 +5,54 @@ Market
 
 {% block content %}
 
+<script>
+    function toggleSortDropdown() {
+      document.getElementById("sortDropdown").classList.toggle("show");
+    }
+  
+    // Optional: close dropdown if clicked outside
+    document.addEventListener('click', function (e) {
+      const sortContainer = document.querySelector('.sort-container');
+      if (!sortContainer.contains(e.target)) {
+        document.getElementById("sortDropdown").classList.remove("show");
+      }
+    });
+  </script>
+
+<link rel="stylesheet" href="../static/css/market.css">
+
 <div class="market-container">
+
+<!-- begin fetch available items-->
     <div class="available-items">
         <h2>Available Items</h2>
+
+        <!-- Dropddown to filter-->
+        <div class="sort-container">
+            <button class="sort-toggle" onclick="toggleSortDropdown()" aria-label="Toggle sort options">
+            <h2 style="margin-right: 10px;">Sort by: </h2>
+              <svg data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"></path>
+              </svg>
+            </button>
+          
+            <form method="get" class="sort-form" id="sortDropdown">
+              <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="">-- Select --</option>
+                <option value="price_asc" {% if request.args.get('sort') == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                <option value="price_desc" {% if request.args.get('sort') == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                <option value="name_asc" {% if request.args.get('sort') == 'name_asc' %}selected{% endif %}>Name: A - Z</option>
+                <option value="name_desc" {% if request.args.get('sort') == 'name_desc' %}selected{% endif %}>Name: Z - A</option>
+              </select>
+            </form>
+          </div>
+          
         <div class="itemCont">
             {% for item in items %}
             <span class="item">
                 <img src="{{ item.image }}" alt="">
                 <h2>{{ item.name }}</h2>
-                <span>{{ item.price }}$</span>
+                <h3 class="price">{{ item.price }}$</h3>
                 <div class="optionsCont">
                     <button class="options" onclick="openModalPurchase('{{ item.id }}')">Buy</button>
                     <!-- Button to trigger modal -->
@@ -36,7 +75,7 @@ Market
             <span class="item">
                 <img src="{{ owned_item.image }}" alt="">
                 <h2>{{ owned_item.name }}</h2>
-                <span>{{ owned_item.price }}$</span>
+                <h3 class="price">{{ owned_item.price }}$</h3>
                 <div class="optionsCont">
                     <button class="options" onclick="openModalSale('{{ owned_item.id }}')">Sell</button>
                     <!-- Button to trigger modal -->

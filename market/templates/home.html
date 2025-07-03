@@ -1,4 +1,123 @@
+<!-- home.html -->
 {% extends 'base.html' %}
 {% block title %}
-Home Page
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/css/home.css">
+
+<div class="homeCont">
+  <div class="carousel-container">
+    <div class="carousel-slides" id="carouselSlides">
+
+      <div class="carousel-slide">
+        <div class="imgCont" style="background-image: url('/static/images/banner1.jpg');"></div>
+        <div class="carousel-caption">
+          <h2>List Your Items</h2>
+          <p>Turn your goods into gold — start selling today!</p>
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="imgCont" style="background-image: url('/static/images/banner2.jpg');"></div>
+        <div class="carousel-caption">
+          <h2>Get Paid Fast</h2>
+          <p>Secure payments, straight to your wallet.</p>
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="imgCont" style="background-position: top right; background:url('/static/images/banner3.jpg');"></div>
+        <div class="carousel-caption">
+          <h2>Trade with Merchants</h2>
+          <p>Swap goods easily with trusted sellers.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="carousel-controls">
+      <button class="carousel-button" onclick="prevSlide()">‹</button>
+      <button class="carousel-button" onclick="nextSlide()">›</button>
+    </div>
+  </div>
+
+<div class="hero-card-container">
+    <div class="hero-card">
+    <h1>Welcome to ytrade</h1>
+    <p>A small, monolithic Flask market app built for simplicity and speed.</p>
+    
+    <ul class="features-list">
+        <li>Auth: login, register & password reset</li>
+        <li>Secure user sessions with Flask-Login & bcrypt</li>
+        <li>Effortless item listing & trading</li>
+    </ul>
+
+    <a href="/register" class="btn-primary">Get Started</a>
+    
+    <div class="tech-stats">
+        Built with Flask, PostgreSQL, WTForms, and Docker — <br>
+        ~500 lines of Python, running on a single container.
+    </div>
+    </div>
+
+    <div class="hero-card">
+        <h1>Secure by Design</h1>
+        <p>Dockerized app with secrets management and environment isolation out of the box.</p>
+        
+        <ul class="features-list">
+        <li>Docker Secrets for API keys and DB credentials</li>
+        <li>Clean separation of dev and production configs</li>
+        <li>Minimal surface area — only essential ports exposed</li>
+        </ul>
+    
+        <a href="/docs" class="btn-primary">View Architecture</a>
+        
+        <div class="tech-stats">
+        Encrypted secrets, override files, and staged builds using Docker Compose.
+        </div>
+    </div>
+
+    <div class="hero-card">
+        <h1>Minimalist, Maintainable Code</h1>
+        <p>No bloat. Just clear routes, reusable forms, and secure models.</p>
+        
+        <ul class="features-list">
+        <li>Single-responsibility views in Flask</li>
+        <li>WTForms for consistent validation & CSRF protection</li>
+        <li>Lightweight ORM mapping with SQLAlchemy</li>
+        </ul>
+    
+        <a href="/source" class="btn-primary">Explore Source Code</a>
+        
+        <div class="tech-stats">
+        ~15 files total. Readable, self-documented, and ready for production.
+        </div>
+    </div>
+</div>  
+
+</div>
+
+
+  <script>
+    const slides = document.getElementById('carouselSlides');
+    const totalSlides = 3;
+    let index = 0;
+
+    function updateCarousel() {
+      slides.style.transform = 'translateX(' + (-index * 100) + '%)';
+    }
+
+    function nextSlide() {
+      index = (index + 1) % totalSlides;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      index = (index - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    setInterval(nextSlide, 6000); // Autoplay every 6 seconds
+  </script>
 {% endblock %}

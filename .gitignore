@@ -28,3 +28,7 @@ env/
 #/market.db, docker secrets folder
 secrets/
 *.sqlite
+
+#static
+
+.market/static/localimages
